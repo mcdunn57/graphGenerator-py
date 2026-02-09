@@ -1,0 +1,23 @@
+[project]
+name = "graph-generator-py"
+version = "0.1.0"
+description = "Declarative, schema-driven synthesis engine for Neo4j optimized for IRS tax domain"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "User", email = "user@example.com"},
+]
+dependencies = [
+    "neo4j>=5.0.0",
+    "Faker>=19.0.0",
+    "networkx>=3.0",
+    "pandas>=2.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
