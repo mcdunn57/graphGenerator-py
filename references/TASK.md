@@ -1,0 +1,36 @@
+# Task List for GraphGenerator-Py
+
+- [x] Initialize Project Structure <!-- id: 0 -->
+    - [x] Create directory structure (src, tests, references) <!-- id: 1 -->
+    - [x] Initialize git repository <!-- id: 2 -->
+    - [x] create `pyproject.toml` with dependencies (neo4j, faker, networkx, pandas) <!-- id: 3 -->
+    - [x] Create `README.md` with project overview <!-- id: 4 -->
+- [x] Implement Core Architecture <!-- id: 5 -->
+    - [x] Implement `Registry` module (Singleton, state-tracking) <!-- id: 6 -->
+    - [x] Implement `Provider` layer (Faker wrapper) <!-- id: 7 -->
+    - [x] Implement `Topology` engine (NetworkX integration) <!-- id: 8 -->
+- [x] Develop Declarative API <!-- id: 9 -->
+    - [x] Implement `@node` decorator <!-- id: 10 -->
+    - [x] Implement `@relationship` decorator <!-- id: 11 -->
+    - [x] Implement `Field` class with validation <!-- id: 12 -->
+- [x] Build Ingestion Engine <!-- id: 13 -->
+    - [x] Implement `BatchGenerator` for chunking <!-- id: 14 -->
+    - [x] Implement `Neo4jConnector` with UNWIND strategy <!-- id: 15 -->
+    - [x] Implement Pre-flight Schema Validation <!-- id: 16 -->
+- [x] Implement Tax Domain Logic <!-- id: 17 -->
+    - [x] Implement `ComputedField` logic (Intra-node calculation) <!-- id: 18 -->
+    - [ ] Implement Inter-node propagation logic <!-- id: 19 -->
+    - [x] Implement Conditional Cardinality rules <!-- id: 20 -->
+    - [x] Implement Deterministic TIN/SSN generation <!-- id: 21 -->
+- [x] Develop Reference Data Ingestor <!-- id: 22 -->
+    - [x] Implement `ReferenceStore` (CSV/JSON/Parquet loader) <!-- id: 23 -->
+    - [x] Implement Sampling Strategies (Weighted, Sequential, Categorical) <!-- id: 24 -->
+    - [x] Integrate Reference Binding into `@node` decorator <!-- id: 25 -->
+- [x] Implement Validation & Verification Suites <!-- id: 26 -->
+    - [x] Implement Path Integrity Check <!-- id: 27 -->
+    - [x] Implement Temporal Consistency Validator <!-- id: 28 -->
+    - [x] Implement Cardinality Validator <!-- id: 29 -->
+    - [x] Implement Regulatory Consistency Check (Mock Audit) <!-- id: 30 -->
+    - [x] Implement PII Collision Monitor <!-- id: 31 -->
+- [x] Verification <!-- id: 32 -->
+    - [x] Run Unit Tests <!-- id: 33 -->
