@@ -126,3 +126,16 @@ finally:
    ```bash
    pytest
    ```
+
+
+### What you need to do:
+To "activate" this file and install your project along with its dependencies, run the following command in your terminal from the root directory:
+
+bash
+pip install -e .
+-e (editable): This flag is important for development. It means any changes you make to the code in src/ will be immediately reflected without needing to reinstall.
+.: Tells pip to look for the 
+pyproject.toml
+ in the current directory.
+Once you run this, you will be able to import your library (import graph_generator) from anywhere in your environment.
+'''
