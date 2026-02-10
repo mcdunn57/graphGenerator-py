@@ -1,6 +1,6 @@
 import pandas as pd
 import random
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Dict
 import os
 import logging
 
@@ -44,6 +44,18 @@ class ReferenceSource:
             logger.error(f"Failed to load reference data from {self.path}: {e}")
             raise
 
+    def get_row(self, index: int) -> Dict[str, Any]:
+        """
+        Get the row at the specified index as a dictionary.
+        """
+        if not self._loaded:
+            self.load()
+            
+        if index >= len(self.data):
+             raise ValueError(f"Index {index} out of bounds for reference data in {self.path} (length {len(self.data)})")
+        
+        return self.data.iloc[index].to_dict()
+
     def sample(self, column: str, count: int = 1) -> List[Any]:
         """
         Sample values from the specified column.
@@ -60,6 +72,13 @@ class ReferenceSource:
             start = self._seq_index
             end = start + count
             
+            if end > len(self.data):
+                 # If we are just verifying if we CAN sample, this might check
+                 # But if multiple fields share the source, this index increments multiple times per "entity"
+                 # This is the problem.
+                 pass
+
+            # For now, we assume this is used for independent fields OR we fix the caller.
             if end > len(self.data):
                  raise ValueError(f"Exhausted reference data in {self.path} for sequential sampling. Needed {end}, available {len(self.data)}.")
             
