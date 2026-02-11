@@ -138,11 +138,13 @@ pip install -e .
 pyproject.toml
  in the current directory.
 Once you run this, you will be able to import your library (import graph_generator) from anywhere in your environment.
+
+- need to setup a data folder and a generator_output folder.  Put input csv files into data folder
 '''
 
 ### Additional information
-- node csv file name need to be in this format: node_<label>
+- node csv file name need to be in this format: node_label.  An example is node_SSN.csv 
 - node csv has to have at least one field as 'id'
-- relationship csv file name need to be in this form: rel_<type>_<from_node>_<to_node>
+- relationship csv file name need to be in this form: rel_type_fromNode_toNode
 - relationship file name is parsed, where the last two elements are considered from and to nodes, and the prior element(s) are the relationship type. e.g., "Rel_WORKED_FOR_SSN_EIN" represents "WORKED_FOR" relationship
-- relationship field names are used as properties for the generated relationship records, and are sample over.
+- relationship field names are used as properties for the generated relationship records, and are sampled over to produce the dummy data.
