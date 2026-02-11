@@ -52,6 +52,7 @@ class SchemaLoader:
     def __init__(self, key_column: str = "id"):
         self.nodes: List[NodeDefinition] = []
         self.relationships: List[RelationshipDefinition] = []
+        self.key_column = key_column
 
     def load_from_directory(self, path: str):
         if not os.path.isdir(path):
@@ -90,7 +91,8 @@ class SchemaLoader:
         for col in columns:
             # Create a Field that points to this file/column
             # source=path, column=col, strategy="sequential" (to replicate file rows)
-            fields[col] = Field(source=path, column=col, strategy="sequential")
+            is_unique = (str(col).lower() == self.key_column.lower())
+            fields[col] = Field(source=path, column=col, strategy="sequential", unique=is_unique)
             
         def_node = NodeDefinition(
             label=label,
@@ -108,11 +110,12 @@ class SchemaLoader:
         
         name_parts = filename.replace("Rel_", "").replace(".csv", "").split("_")
         if len(name_parts) >= 3:
-            rel_type = name_parts[0]
-            from_node = name_parts[1]
-            to_node = name_parts[2]
+            from_node = name_parts[-2]
+            to_node = name_parts[-1]
+            rel_type = "_".join(name_parts[:-2])
         else:
             # Fallback or error?
+            print(f"Warning: Could not infer from/to nodes from filename '{filename}'. Expected format: Rel_<Type>_<From>_<To>.csv. Defaulting to 'Unknown'.")
             rel_type = name_parts[0]
             from_node = "Unknown" 
             to_node = "Unknown"
@@ -125,7 +128,7 @@ class SchemaLoader:
         for col in columns:
             if col.lower() in ['_from', '_to', '_start', '_end']:
                 continue
-            fields[col] = Field(source=path, column=col, strategy="sequential")
+            fields[col] = Field(source=path, column=col, strategy="weighted")
 
         def_rel = RelationshipDefinition(
             type=rel_type,

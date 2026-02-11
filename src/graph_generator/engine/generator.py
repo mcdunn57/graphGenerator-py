@@ -176,7 +176,29 @@ class BatchGenerator:
                 
                 # Generate properties
                 for name, field in fields.items():
-                    val = field.generate(self.provider)
+                    val = None
+                    # Check for Reference Binding
+                    if field.reference or field.source:
+                        ref_source = None
+                        if isinstance(field.reference, ReferenceSource):
+                            ref_source = field.reference
+                        elif field.source:
+                            ref_source = self.ref_store.get_source(field.source, sampling=field.strategy or "weighted")
+                        
+                        if ref_source:
+                            col = field.column or name
+                            try:
+                                samples = ref_source.sample(col, count=1)
+                                if hasattr(samples, 'iloc'):
+                                    val = samples.iloc[0]
+                                else:
+                                    val = samples[0]
+                            except Exception:
+                                pass
+
+                    if val is None:
+                        val = field.generate(self.provider)
+
                     rel_data[name] = val
                     if instance:
                         setattr(instance, name, val)
