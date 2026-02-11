@@ -140,6 +140,7 @@ pyproject.toml
 Once you run this, you will be able to import your library (import graph_generator) from anywhere in your environment.
 
 - need to setup a data folder and a generator_output folder.  Put input csv files into data folder
+- The library contains a test_data folder with four csv files that can be used to test with.
 '''
 
 ### Additional information
