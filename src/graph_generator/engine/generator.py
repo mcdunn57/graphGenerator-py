@@ -66,7 +66,7 @@ class BatchGenerator:
                 val = None
                 
                 # Dynamic Node Optimization: Use pre-fetched row
-                if is_dynamic and source_obj and field.column in row_data:
+                if is_dynamic and source_obj and field.column in row_data and getattr(field, 'strategy', 'sequential') == 'sequential':
                     val = row_data[field.column]
                 else:
                     # Check for Reference Binding (Standard logic)
@@ -83,15 +83,11 @@ class BatchGenerator:
                              # Note: If is_dynamic and we already have source_obj == ref_source, we shouldn't sample again!
                              # But here we are in "else" or if field.column not in row_data.
                              # If field.source != node_def.source_path, we sample.
-                             if is_dynamic and field.source == node_def.source_path:
-                                  # Should have been caught above. If not in row_data, maybe error?
-                                  pass
-                             else:
-                                 col = field.column or name 
-                                 try:
-                                     val = ref_source.sample(col, count=1)[0]
-                                 except Exception as e:
-                                     raise ValueError(f"Failed to sample reference for field {name}: {e}")
+                             col = field.column or name 
+                             try:
+                                 val = ref_source.sample(col, count=1)[0]
+                             except Exception as e:
+                                 raise ValueError(f"Failed to sample reference for field {name}: {e}")
 
                     # If no reference or failed (though we raised), use provider
                     if val is None:

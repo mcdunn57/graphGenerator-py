@@ -63,6 +63,10 @@ class Provider:
         """
         Delegate to Faker for any other method.
         """
+        # Check if the method exists on the Provider instance itself
+        if hasattr(self, method_name) and method_name != "generic":
+            return getattr(self, method_name)(*args, **kwargs)
+
         if hasattr(self._faker, method_name):
             return getattr(self._faker, method_name)(*args, **kwargs)
         raise AttributeError(f"Provider has no attribute '{method_name}'")

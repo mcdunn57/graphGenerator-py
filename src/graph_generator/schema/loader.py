@@ -92,7 +92,23 @@ class SchemaLoader:
             # Create a Field that points to this file/column
             # source=path, column=col, strategy="sequential" (to replicate file rows)
             is_unique = (str(col).lower() == self.key_column.lower())
-            fields[col] = Field(source=path, column=col, strategy="sequential", unique=is_unique)
+            col_str = str(col).lower()
+            
+            # Special handling for SSN to ensure synthetic generation (e.g. 999-xx-xxxx)
+            if "ssn" in col_str or (label.lower() == "ssn" and is_unique):
+                fields[col] = Field(formatter="unique_ssn", unique=True)
+            # Heuristic for Names: Check label to distinguish Business vs Person
+            elif "name" in col_str:
+                if any(x in label.lower() for x in ['ein', 'company', 'business', 'corp', 'entity']):
+                    fields[col] = Field(formatter="company")
+                else:
+                    fields[col] = Field(formatter="name")
+            # Heuristic for Dates: Generate new dates
+            elif "date" in col_str:
+                fields[col] = Field(formatter="date")
+            else:
+                strategy = "sequential" if is_unique else "weighted"
+                fields[col] = Field(source=path, column=col, strategy=strategy, unique=is_unique)
             
         def_node = NodeDefinition(
             label=label,

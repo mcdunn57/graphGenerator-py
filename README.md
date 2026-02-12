@@ -1,5 +1,7 @@
 # GraphGenerator-Py
 
+# Work in Progress
+
 GraphGenerator-Py is a declarative, schema-driven synthesis engine for creating structurally plausible and semantically rich graph data for Neo4j. It is designed to go beyond simple random generation by enforcing mathematical dependencies, regulatory logic (specifically for the IRS tax domain), and topological fidelity.
 
 ## Features
@@ -149,3 +151,4 @@ Once you run this, you will be able to import your library (import graph_generat
 - relationship csv file name need to be in this form: rel_type_fromNode_toNode
 - relationship file name is parsed, where the last two elements are considered from and to nodes, and the prior element(s) are the relationship type. e.g., "Rel_WORKED_FOR_SSN_EIN" represents "WORKED_FOR" relationship
 - relationship field names are used as properties for the generated relationship records, and are sampled over to produce the dummy data.
+- Fake properties are currently setup like this for the CSV sampling process: If the Node Label suggests a business (e.g., "EIN", "Company"), it maps to formatter="company". Otherwise (e.g., "SSN", "Person"), it maps to formatter="name". For data property, then sample from years of the data and create entirely new dates with the same year.  A fallback on "weighted" sampling is done for other columns.
